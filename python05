@@ -1,0 +1,21 @@
+import scapy.all as scapy
+def packet_sniffer(packet):
+    if packet.haslayer(scapy.IP):
+        source_ip = packet[scapy.IP].src
+        destination_ip = packet[scapy.IP].dst
+        protocol = packet[scapy.IP].proto
+        print(f"Source IP: {source_ip} --> Destination IP: {destination_ip} Protocol: {protocol}")
+        if packet.haslayer(scapy.TCP):
+            payload = packet[scapy.TCP].payload
+            print("TCP Payload:", payload)
+
+        elif packet.haslayer(scapy.UDP):
+            payload = packet[scapy.UDP].payload
+            print("UDP Payload:", payload)
+
+        print("\n")
+def main():
+    print("Packet Sniffer Started. Press Ctrl+C to stop.")
+    scapy.sniff(prn=packet_sniffer, store=False)
+if __name__ == "__main__":
+    main()
